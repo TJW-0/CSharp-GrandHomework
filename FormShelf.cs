@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +12,7 @@ namespace Library
 {
     public partial class FormShelf : Form
     {
-        bool isNormal = true;//决定是否为常规的管理方式
+        bool isNormal = true;
         Client currentClient { get; set; }
         public FormShelf(Client client)
         {
@@ -21,14 +21,14 @@ namespace Library
             currentClient = client;
         }
 
-        private void addShelfButton_Click(object sender, EventArgs e)//添加书架，直接添加一个新的空书架
+        private void addShelfButton_Click(object sender, EventArgs e)//添加书架，直接添加一个新的空书架,完成
         {
             int k = Convert.ToInt32(BookShelfService.GetAllShelfs().Max(i => i.BookShelfId))+1;
             BookShelfService.AddBookShelf(new BookShelf() { BookShelfId = k+ "" });
             shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
         }
 
-        private void deleteShelfButton_Click(object sender, EventArgs e)//删除书架
+        private void deleteShelfButton_Click(object sender, EventArgs e)//删除书架,完成
         {
             BookShelf shelf = shelfBindingSource.Current as BookShelf;
             BookShelfService.RemoveBookShelf(shelf.BookShelfId);
@@ -47,7 +47,7 @@ namespace Library
             }
         }
 
-        private void deleteButton_Click(object sender, EventArgs e)//删除图书，同上
+        private void deleteButton_Click(object sender, EventArgs e)//删除图书，完成
         {
             Book book = bookBindingSource.Current as Book;
             if (book == null)
@@ -58,7 +58,6 @@ namespace Library
             BookShelfService.RemoveBooks(book.BookId);
             shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
         }
-
 
 
         private void changeDetailButton_Click(object sender, EventArgs e)//修改图书细节
@@ -74,22 +73,23 @@ namespace Library
             }
         }
 
-        private void managebySortButton_Click(object sender, EventArgs e)//改为按分类管理图书
+        private void managebySortButton_Click(object sender, EventArgs e)//改为按分类管理图书,完成
         {
-                    isNormal = false;
+            isNormal = false;
             shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
             bookBindingSource.DataMember = null;
             bookBindingSource.DataSource = BookShelfService.AllBooks();
         }
 
-        private void refreshButton_Click(object sender, EventArgs e)//将管理方式改为按书架
+        private void refreshButton_Click(object sender, EventArgs e)//将管理方式改为按书架，完成
         {
-                    isNormal = true;
+            isNormal = true;
             shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
             bookBindingSource.DataSource = shelfBindingSource;
             bookBindingSource.DataMember = "Books";
         }
-                private void searchPictureBox_Click(object sender, EventArgs e)
+
+        private void searchPictureBox_Click(object sender, EventArgs e)
         {
             if (searchTextBox.Text == null)
             {
