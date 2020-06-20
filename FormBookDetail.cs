@@ -18,8 +18,8 @@ namespace Library
         public Book currentBook { get; set; }//现在正在查看的图书
         public string path { get; set; }
         public static string resPath { get; set; }
-        public int Flag = 0;//指示该界面由主界面还是图书管理界面进入
-        public FormBookDetail()//无参数，表示是由添加新书按钮进入，所有文本框均为空并可用，但借阅、预约、推荐相关组件不可使用完成
+        public int Flag = 0;//指示该界面由主界面还是图书管理界面进入（可能无用）
+        public FormBookDetail(BookShelf shelf)//只有书架参数，表示是由添加新书按钮进入，所有文本框均为空并可用，但借阅、预约、推荐相关组件不可使用，基本完成
         {
             InitializeComponent();
             currentShelf = shelf;
@@ -48,7 +48,7 @@ namespace Library
             findPath();
         }
 
-        public FormBookDetail(Book book,Client client, int flag)//表示是由查看书籍详情进入的,flag的值取1、2（分别表示从主界面进入和从图书管理界面进入，前者只读），完成
+        public FormBookDetail(Book book,Client client, int flag)//表示是由查看书籍详情进入的,flag的值取1、2（分别表示从主界面进入和从图书管理界面进入，前者只读），基本完成
         {
             InitializeComponent();
             this.nameTextBox.Text = book.Name;
@@ -75,6 +75,8 @@ namespace Library
                 this.introductionTextBox.ReadOnly = true;
                 this.addButton.Enabled = false;
                 this.addButton.Visible = false;
+                this.chooseImageButton.Visible = false;
+                this.chooseImageButton.Enabled = false;
             }
             else//从图书管理界面进入则借阅、推荐、预约按钮被隐藏
             {
@@ -128,7 +130,7 @@ namespace Library
             this.recommendButton.Visible = false;
         }
 
-        private void appointButton_Click(object sender, EventArgs e)//预约
+        private void appointButton_Click(object sender, EventArgs e)//预约，预约时间必须后于当前时间（可能要涉及DateTime），并同时改动预约情况
         {
             BookShelfService.AppointBook(currentBook, currentClient);
             this.appointButton.Enabled = false;
@@ -152,6 +154,10 @@ namespace Library
                 Book newBook = new Book(bookId, name, bookShelfId, author, description, lendTime, clientName, sort, appointers) { State = "可正常使用"};
                 if(path != null)
                 {
+                    if (File.Exists(resPath + @"\" + newBook.Name + ".jpg")) //判断文件是否存在
+                    {
+                        File.Delete(resPath + @"\" + newBook.Name + ".jpg");
+                    }
                     File.Copy(path, resPath + @"\" + newBook.Name + ".jpg");
                     newBook.imagePath = path;
                 }
@@ -167,7 +173,7 @@ namespace Library
             }
         }
 
-       private void finishButton_Click(object sender, EventArgs e)//完成
+        private void finishButton_Click(object sender, EventArgs e)//完成
         {
             if(Flag == 2)
             {
@@ -192,7 +198,7 @@ namespace Library
         public void findPath()
         {
             string basePath = Directory.GetCurrentDirectory();
-            resPath = basePath.Replace(@"\bin\Debug", @"\Resources");
+            resPath = basePath.Replace(@"\bin\Debug", @"\discovers");
         }
         private void chooseImageButton_Click(object sender, EventArgs e)//设置图像
         {
