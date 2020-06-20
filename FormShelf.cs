@@ -59,7 +59,37 @@ namespace Library
             shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
         }
 
-        private void searchButton_Click(object sender, EventArgs e)//查询图书
+
+
+        private void changeDetailButton_Click(object sender, EventArgs e)//修改图书细节
+        {
+            BookShelf shelf = shelfBindingSource.Current as BookShelf;
+            Book book = bookBindingSource.Current as Book;
+            FormBookDetail formBookDetail = new FormBookDetail(book,currentClient,2);
+            if (formBookDetail.ShowDialog() == DialogResult.OK)
+            {
+                shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
+                bookBindingSource.DataSource = shelfBindingSource;
+                bookBindingSource.DataMember = "Books";
+            }
+        }
+
+        private void managebySortButton_Click(object sender, EventArgs e)//改为按分类管理图书
+        {
+                    isNormal = false;
+            shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
+            bookBindingSource.DataMember = null;
+            bookBindingSource.DataSource = BookShelfService.AllBooks();
+        }
+
+        private void refreshButton_Click(object sender, EventArgs e)//将管理方式改为按书架
+        {
+                    isNormal = true;
+            shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
+            bookBindingSource.DataSource = shelfBindingSource;
+            bookBindingSource.DataMember = "Books";
+        }
+                private void searchPictureBox_Click(object sender, EventArgs e)
         {
             if (searchTextBox.Text == null)
             {
@@ -116,7 +146,7 @@ namespace Library
                         else
                         {
                             BookShelf shelf = shelfBindingSource.Current as BookShelf;
-                            foreach (var book in BookShelfService.AllBooks().Where(o => o.Author.Contains(key) == true).Where(i=>i.BookShelfId == shelf.BookShelfId))
+                            foreach (var book in BookShelfService.AllBooks().Where(o => o.Author.Contains(key) == true).Where(i => i.BookShelfId == shelf.BookShelfId))
                             {
                                 searchBooks.Add(book);
                             }
@@ -146,35 +176,6 @@ namespace Library
                 bookBindingSource.DataMember = null;
                 bookBindingSource.DataSource = searchBooks;
             }
-        }
-
-        private void changeDetailButton_Click(object sender, EventArgs e)//修改图书细节
-        {
-            BookShelf shelf = shelfBindingSource.Current as BookShelf;
-            Book book = bookBindingSource.Current as Book;
-            FormBookDetail formBookDetail = new FormBookDetail(book,currentClient,2);
-            if (formBookDetail.ShowDialog() == DialogResult.OK)
-            {
-                shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
-                bookBindingSource.DataSource = shelfBindingSource;
-                bookBindingSource.DataMember = "Books";
-            }
-        }
-
-        private void managebySortButton_Click(object sender, EventArgs e)//改为按分类管理图书
-        {
-                    isNormal = false;
-            shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
-            bookBindingSource.DataMember = null;
-            bookBindingSource.DataSource = BookShelfService.AllBooks();
-        }
-
-        private void refreshButton_Click(object sender, EventArgs e)//将管理方式改为按书架
-        {
-                    isNormal = true;
-            shelfBindingSource.DataSource = BookShelfService.GetAllShelfs();
-            bookBindingSource.DataSource = shelfBindingSource;
-            bookBindingSource.DataMember = "Books";
         }
     }
 }
