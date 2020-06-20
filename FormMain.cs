@@ -184,38 +184,6 @@ namespace Library
             Query(1);
         }
 
-        private void searchButton_Click(object sender, EventArgs e)//查询，完成
-        {
-            if(searchTextBox.Text == null)
-            {
-                MessageBox.Show("没有输入用于查询的关键词！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                switch (searchComboBox.Text)
-                {
-                    case "书号":
-                        Search(1, searchTextBox.Text);
-                        break;
-                    case "书名":
-                        Search(2, searchTextBox.Text);
-                        break;
-                    case "作者":
-                        Search(3, searchTextBox.Text);
-                        break;
-                    case "分类":
-                        Search(4, searchTextBox.Text);
-                        break;
-                    case "书架号":
-                        Search(5, searchTextBox.Text);
-                        break;
-                    default:
-                        MessageBox.Show("没有选择正确的查询方式！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        break;
-                }
-            }
-        }
-
         private void queryButton_Click(object sender, EventArgs e)//排序，完成
         {
             switch (queryComboBox.Text)
@@ -382,6 +350,36 @@ namespace Library
                 booksBindingSource.DataSource = searchBooks;
             }
         }
-
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            if (searchTextBox.Text == null)
+            {
+                MessageBox.Show("没有输入用于查询的关键词！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                switch (searchComboBox.Text)
+                {
+                    case "书号":
+                        Search(1, searchTextBox.Text);
+                        break;
+                    case "书名":
+                        Search(2, searchTextBox.Text);
+                        break;
+                    case "作者":
+                        Search(3, searchTextBox.Text);
+                        break;
+                    case "分类":
+                        Search(4, searchTextBox.Text);
+                        break;
+                    case "书架号":
+                        Search(5, searchTextBox.Text);
+                        break;
+                    default:
+                        MessageBox.Show("没有选择正确的查询方式！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                }
+            }
+        }
     }
 }
