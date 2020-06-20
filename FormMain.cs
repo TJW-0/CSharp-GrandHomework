@@ -259,8 +259,8 @@ namespace Library
             this.registerButton.Enabled = true;
             this.managePictureBox.Visible = false;
             this.managePictureBox.Enabled = false;
-            this.manageLabel.Visible = true;
-            this.manageLabel.Enabled = true;
+            this.manageLabel.Visible = false;
+            this.manageLabel.Enabled = false;
             lendBooks = new List<Book>();
             lendBindingSource.DataSource = lendBooks;
             lendBindingSource.ResetBindings(false);
@@ -385,7 +385,7 @@ namespace Library
             }
         }
 
-        private void managePictureBox_Click(object sender, EventArgs e)
+        private void managePictureBox_Click(object sender, EventArgs e)//进入图书管理页面
         {
             FormShelf formShelf = new FormShelf(currentClient);
             if (formShelf.ShowDialog() == DialogResult.OK)
