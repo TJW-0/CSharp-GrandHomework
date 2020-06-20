@@ -193,6 +193,11 @@ namespace Library
 
         private void queryButton_Click(object sender, EventArgs e)//排序，完成
         {
+                    if(currentClient == null)
+            {
+                MessageBox.Show("请登录后再进行此操作！");
+                return;
+            }
             switch (queryComboBox.Text)
             {
                 case "推荐数":
@@ -233,11 +238,6 @@ namespace Library
                 appointBindingSource.DataSource = appointBooks;
                 lendBindingSource.DataSource = lendBooks;
             }
-        }
-
-        private void manageButton_Click(object sender, EventArgs e)//图书管理，完成
-        {
-
         }
 
         private void exitButton_Click(object sender, EventArgs e)//退出，完成
@@ -355,6 +355,11 @@ namespace Library
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+                    if(currentClient == null)
+            {
+                MessageBox.Show("请登录后再进行此操作！");
+                return;
+            }
             if (searchTextBox.Text == null)
             {
                 MessageBox.Show("没有输入用于查询的关键词！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
