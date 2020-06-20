@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -42,13 +42,16 @@ namespace Library
                 ClientService.AddAdministrator(user2);
                 ClientService.AddAdministrator(user3);
             }
-            this.manageButton.Visible = false;
-            this.manageButton.Enabled = false;
-            if(BookShelfService.AllBooks().Count == 0)//设置初始值
+            this.managePictureBox.Visible = false;
+            this.managePictureBox.Enabled = false;
+            this.manageLabel.Visible = false;
+            this.manageLabel.Enabled = false;
+            if (BookShelfService.AllBooks().Count == 0)//设置初始值
             {
                 Test.Test1();
                 Test.Test2();
             }
+            //MessageBox.Show("1");
             Year = DateTime.Now.Year;
             Month = DateTime.Now.Month;
             String time = DateTime.Now.ToLongDateString().ToString();
@@ -59,9 +62,10 @@ namespace Library
             Books = BookShelfService.AllBooks();
             booksBindingSource.DataSource = Books;
             Query(1);
+            //MessageBox.Show(Year+"年"+Month+"月"+Day+"日");
         }
 
-        private void returnButton_Click(object sender, EventArgs e)//还书，完成
+        private void returnButton_Click(object sender, EventArgs e)//还书,完成
         {
             Book book = lendBindingSource.Current as Book;
             if (book == null)
@@ -102,8 +106,10 @@ namespace Library
                     this.registerButton.Enabled = false;
                     if (currentClient.Name == "管理员")
                     {
-                        this.manageButton.Visible = true;
-                        this.manageButton.Enabled = true;
+                        this.managePictureBox.Visible = true;
+                        this.managePictureBox.Enabled = true;
+                        this.manageLabel.Visible = true;
+                        this.manageLabel.Enabled = true;
                     }
                     appointBooks = BookShelfService.GetAllAppointedBooks(currentClient);
                     lendBooks = BookShelfService.GetAllLentBooks(currentClient);
@@ -184,6 +190,7 @@ namespace Library
             Query(1);
         }
 
+
         private void queryButton_Click(object sender, EventArgs e)//排序，完成
         {
             switch (queryComboBox.Text)
@@ -230,15 +237,7 @@ namespace Library
 
         private void manageButton_Click(object sender, EventArgs e)//图书管理，完成
         {
-            FormShelf formShelf = new FormShelf(currentClient);
-            if (formShelf.ShowDialog() == DialogResult.OK)
-            {
-                Query(1);
-                appointBooks = BookShelfService.GetAllAppointedBooks(currentClient);
-                lendBooks = BookShelfService.GetAllLentBooks(currentClient);
-                appointBindingSource.DataSource = appointBooks;
-                lendBindingSource.DataSource = lendBooks;
-            }
+
         }
 
         private void exitButton_Click(object sender, EventArgs e)//退出，完成
@@ -258,14 +257,17 @@ namespace Library
             this.signInButton.Enabled = true;
             this.registerButton.Visible = true;
             this.registerButton.Enabled = true;
-            this.manageButton.Visible = false;
-            this.manageButton.Enabled = false;
+            this.managePictureBox.Visible = false;
+            this.managePictureBox.Enabled = false;
+            this.manageLabel.Visible = true;
+            this.manageLabel.Enabled = true;
             lendBooks = new List<Book>();
             lendBindingSource.DataSource = lendBooks;
             lendBindingSource.ResetBindings(false);
             appointBooks = new List<Book>();
             appointBindingSource.DataSource = appointBooks;
             appointBindingSource.ResetBindings(false);
+
         }
 
         private void Query(int i)//排序方法，i表示具体的排序规则，完成
@@ -350,6 +352,7 @@ namespace Library
                 booksBindingSource.DataSource = searchBooks;
             }
         }
+
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             if (searchTextBox.Text == null)
@@ -381,5 +384,19 @@ namespace Library
                 }
             }
         }
+
+        private void managePictureBox_Click(object sender, EventArgs e)
+        {
+            FormShelf formShelf = new FormShelf(currentClient);
+            if (formShelf.ShowDialog() == DialogResult.OK)
+            {
+                Query(1);
+                appointBooks = BookShelfService.GetAllAppointedBooks(currentClient);
+                lendBooks = BookShelfService.GetAllLentBooks(currentClient);
+                appointBindingSource.DataSource = appointBooks;
+                lendBindingSource.DataSource = lendBooks;
+            }
+        }
     }
 }
+
